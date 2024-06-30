@@ -49,7 +49,7 @@ public class AuthService {
      * @return token to authenticate
      */
     public AuthenticationResponse register(RegisterRequest request) {
-        Role role = request.getRole() == 1 ? Role.ADMIN : Role.USER;
+        Role role = request.getRole() == 1 ? Role.MANAGER : Role.CUSTOMER;
         Users user;
         ObjectMapper mapper = new ObjectMapper();
         try {
