@@ -54,9 +54,7 @@ public class AuthService {
         ObjectMapper mapper = new ObjectMapper();
         try {
             user = mapper.readValue(mapper.writeValueAsString(request), Users.class);
-            LocalDate dob = user.getDob().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            int ageInYears = Period.between(dob, LocalDate.now()).getYears();
-            logger.info("ageInYears: {}", ageInYears);
+            logger.info("user: {}", user);
         } catch (JsonProcessingException e) {
             logger.error(e.getMessage());
             throw new RuntimeException(e);
@@ -64,7 +62,7 @@ public class AuthService {
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(role);
-        if (userRepository.findByUsername(request.getUsername()).isEmpty()) {
+        if (userRepository.findByEmail(request.getEmail()).isEmpty()) {
             userRepository.save(user);
         }
         List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role.name()));
@@ -82,7 +80,7 @@ public class AuthService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
                 request.getPassword()));
-        Users user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+        Users user = userRepository.findByEmail(request.getUsername()).orElseThrow();
         List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
         var jwtToken = jwtService.generateToken(new User(user.getUsername(), user.getPassword(), user.getAuthorities()));
         return new AuthenticationResponse(jwtToken);
