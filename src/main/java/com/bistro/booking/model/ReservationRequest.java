@@ -18,8 +18,7 @@ public class ReservationRequest {
     private Long requestId;
 
     @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "booking_id")
+    @OneToOne(mappedBy = "reservationRequest")
     private Booking booking;
 
     @Enumerated(EnumType.STRING)

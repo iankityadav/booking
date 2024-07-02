@@ -15,7 +15,7 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bookingId;
+    private Long id;
 
     @JsonIgnore
     @ManyToOne
@@ -39,7 +39,8 @@ public class Booking {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reservation_id")
     private ReservationRequest reservationRequest;
 }
 
