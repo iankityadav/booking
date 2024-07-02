@@ -7,6 +7,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +15,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +33,14 @@ public class Users implements UserDetails {
     private String phone;
     @Enumerated(EnumType.STRING)
     private  Role role;
-    @CreationTimestamp(source = SourceType.DB)
+    @CreatedDate
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL)
+    private Set<Restaurant> restaurants;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Set<Booking> bookings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
