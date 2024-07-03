@@ -1,5 +1,6 @@
 package com.bistro.booking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
@@ -36,9 +37,11 @@ public class Users implements UserDetails {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL)
     private Set<Restaurant> restaurants;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Booking> bookings;
 
