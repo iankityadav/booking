@@ -45,9 +45,5 @@ public class Restaurant {
     @JsonIgnore
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private Set<Booking> bookings;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "capacity_id")
-    private Capacity capacity;
 }
 
