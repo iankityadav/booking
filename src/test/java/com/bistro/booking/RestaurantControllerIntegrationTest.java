@@ -1,12 +1,10 @@
 package com.bistro.booking;
 
 import com.bistro.booking.model.Restaurant;
+import com.bistro.booking.model.RestaurantTable;
 import com.bistro.booking.model.Role;
 import com.bistro.booking.model.Users;
-import com.bistro.booking.repository.BookingRepository;
-import com.bistro.booking.repository.ReservationRequestRepository;
-import com.bistro.booking.repository.RestaurantRepository;
-import com.bistro.booking.repository.UserRepository;
+import com.bistro.booking.repository.*;
 import com.bistro.booking.service.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +17,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,6 +35,9 @@ public class RestaurantControllerIntegrationTest {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private RestaurantTableRepository restaurantTableRepository;
 
     @Autowired
     private BookingRepository bookingRepository;
@@ -56,6 +58,7 @@ public class RestaurantControllerIntegrationTest {
         baseUrl = "http://localhost:" + port + "/api/restaurants";
         reservationRequestRepository.deleteAll();
         bookingRepository.deleteAll();
+        restaurantTableRepository.deleteAll();
         restaurantRepository.deleteAll();
         userRepository.deleteAll();
     }
@@ -107,6 +110,7 @@ public class RestaurantControllerIntegrationTest {
         userRepository.save(manager);
 
         Restaurant restaurant1 = new Restaurant();
+        RestaurantTable restaurantTable1 = new RestaurantTable();
         restaurant1.setManager(manager);
         restaurant1.setName("Test Restaurant 1");
         restaurant1.setCuisines("Italian");
@@ -115,9 +119,16 @@ public class RestaurantControllerIntegrationTest {
         restaurant1.setWorkingHours("10:00-22:00");
         restaurant1.setTimeSlotInterval("30");
         restaurant1.setCreatedAt(LocalDateTime.now());
+        restaurantTable1.setType("4-Seater");
+        restaurantTable1.setNumber(5);
+        restaurantTable1.setRestaurant(restaurant1);
+        //restaurant1.setTables(Set.of(restaurantTable1));
         restaurantRepository.save(restaurant1);
+        restaurantTableRepository.save(restaurantTable1);
+
 
         Restaurant restaurant2 = new Restaurant();
+        RestaurantTable restaurantTable2 = new RestaurantTable();
         restaurant2.setManager(manager);
         restaurant2.setName("Test Restaurant 2");
         restaurant2.setCuisines("Mexican");
@@ -126,7 +137,15 @@ public class RestaurantControllerIntegrationTest {
         restaurant2.setWorkingHours("10:00-22:00");
         restaurant2.setTimeSlotInterval("30");
         restaurant2.setCreatedAt(LocalDateTime.now());
+        restaurantTable2.setType("2-Seater");
+        restaurantTable2.setRestaurant(restaurant2);
+        restaurantTable2.setNumber(5);
+        //restaurant2.setTables(Set.of(restaurantTable2));
         restaurantRepository.save(restaurant2);
+        restaurantTableRepository.save(restaurantTable2);
+
+
+
 
         HttpHeaders headers = new HttpHeaders();
         String token = jwtService.generateToken(User.withUsername("manager@example.com").password("").roles(Role.MANAGER.name()).build());
