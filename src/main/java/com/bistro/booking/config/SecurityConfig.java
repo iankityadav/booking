@@ -31,6 +31,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth-> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/swagger-ui/**","/swagger-ui.html","/swagger-resources/**","/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 ).exceptionHandling( configure -> configure.authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(appAccessDeniedHandler))

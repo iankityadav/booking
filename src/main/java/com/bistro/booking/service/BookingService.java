@@ -41,13 +41,11 @@ public class BookingService {
         booking.setDate(bookingRequest.getDate());
         ReservationRequest reservationRequest = new ReservationRequest();
         reservationRequest.setStatus(ReservationRequestStatus.PENDING);
-        booking.setReservationRequest(reservationRequest);
         reservationRequest.setBooking(booking);
+        booking.setReservationRequest(reservationRequest);
         Booking createdBooking = bookingRepository.save(booking);
         System.out.println("createdBooking = " + createdBooking.getId());
-//        reservationRequest.setBooking(createdBooking);
         System.out.println("reservationRequest = " + reservationRequest.getRequestId());
-//        reservationRequestRepository.save(reservationRequest);
         return createdBooking;
     }
 
