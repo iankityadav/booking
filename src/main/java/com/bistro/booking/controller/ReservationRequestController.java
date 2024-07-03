@@ -1,5 +1,6 @@
 package com.bistro.booking.controller;
 
+import com.bistro.booking.model.BookingStatus;
 import com.bistro.booking.model.ReservationRequest;
 import com.bistro.booking.model.ReservationRequestStatus;
 import com.bistro.booking.service.ReservationRequestService;
@@ -36,13 +37,13 @@ public class ReservationRequestController {
 
     @PutMapping("/{requestId}/confirm")
     public ResponseEntity<ReservationRequest> confirmReservationRequest(@PathVariable Long requestId) {
-        ReservationRequest updatedRequest = reservationRequestService.updateReservationRequestStatus(requestId, ReservationRequestStatus.CONFIRMED);
+        ReservationRequest updatedRequest = reservationRequestService.updateReservationRequestStatus(requestId, ReservationRequestStatus.CONFIRMED, BookingStatus.CONFIRMED);
         return ResponseEntity.ok(updatedRequest);
     }
 
     @PutMapping("/{requestId}/reject")
     public ResponseEntity<ReservationRequest> rejectReservationRequest(@PathVariable Long requestId) {
-        ReservationRequest updatedRequest = reservationRequestService.updateReservationRequestStatus(requestId, ReservationRequestStatus.REJECTED);
+        ReservationRequest updatedRequest = reservationRequestService.updateReservationRequestStatus(requestId, ReservationRequestStatus.REJECTED, BookingStatus.REJECTED);
         return ResponseEntity.ok(updatedRequest);
     }
 }

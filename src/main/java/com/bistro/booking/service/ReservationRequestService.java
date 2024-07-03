@@ -1,6 +1,7 @@
 package com.bistro.booking.service;
 
 import com.bistro.booking.dto.Notification;
+import com.bistro.booking.model.BookingStatus;
 import com.bistro.booking.model.ReservationRequest;
 import com.bistro.booking.model.ReservationRequestStatus;
 import com.bistro.booking.repository.ReservationRequestRepository;
@@ -33,9 +34,10 @@ public class ReservationRequestService {
         return reservationRequestRepository.findAllByBookingRestaurantManagerIdAndStatus(managerId, status, pageable);
     }
 
-    public ReservationRequest updateReservationRequestStatus(Long requestId, ReservationRequestStatus status) {
+    public ReservationRequest updateReservationRequestStatus(Long requestId, ReservationRequestStatus status, BookingStatus bookingStatus) {
         ReservationRequest request = reservationRequestRepository.findById(requestId).orElseThrow(() -> new RuntimeException("Request not found"));
         request.setStatus(status);
+        request.getBooking().setStatus(bookingStatus);
         ReservationRequest updatedRequest = reservationRequestRepository.save(request);
 
         // Send WebSocket notification

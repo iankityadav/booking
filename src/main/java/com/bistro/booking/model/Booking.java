@@ -22,7 +22,7 @@ public class Booking {
     @JoinColumn(name = "customer_id")
     private Users customer;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
