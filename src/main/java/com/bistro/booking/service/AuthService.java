@@ -68,11 +68,12 @@ public class AuthService {
         List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role.name()));
         String jwtToken = jwtService.generateToken(new User(user.getUsername(), user.getPassword(), user.getAuthorities()));
 
-        return new AuthenticationResponse(jwtToken);
+        return new AuthenticationResponse(jwtToken, user.getId());
     }
 
     /**
      * Method to authenticate user with credentials
+     *
      * @param request
      * @return token to authenticate
      */
@@ -83,6 +84,6 @@ public class AuthService {
         Users user = userRepository.findByEmail(request.getUsername()).orElseThrow();
         List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
         var jwtToken = jwtService.generateToken(new User(user.getUsername(), user.getPassword(), user.getAuthorities()));
-        return new AuthenticationResponse(jwtToken);
+        return new AuthenticationResponse(jwtToken, user.getId());
     }
 }
