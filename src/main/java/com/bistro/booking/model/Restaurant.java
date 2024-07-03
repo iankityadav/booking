@@ -39,7 +39,7 @@ public class Restaurant {
     private LocalDateTime createdAt;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "restaurant")
     private Set<RestaurantTable> tables;
 
     @JsonIgnore
