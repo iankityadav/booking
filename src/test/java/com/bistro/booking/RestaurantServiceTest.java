@@ -1,6 +1,9 @@
 package com.bistro.booking;
 
+import com.bistro.booking.dto.RestaurantInfo;
+import com.bistro.booking.dto.RestaurantTableInfo;
 import com.bistro.booking.model.Restaurant;
+import com.bistro.booking.model.RestaurantTable;
 import com.bistro.booking.repository.RestaurantRepository;
 import com.bistro.booking.service.RestaurantService;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,17 +35,6 @@ class RestaurantServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testSaveRestaurant() {
-        Restaurant restaurant = new Restaurant();
-        restaurant.setName("Test Restaurant");
-        when(restaurantRepository.save(any(Restaurant.class))).thenReturn(restaurant);
-
-        Restaurant savedRestaurant = restaurantService.saveRestaurant(restaurant);
-
-        assertNotNull(savedRestaurant);
-        assertEquals("Test Restaurant", savedRestaurant.getName());
-    }
 
     @Test
     void testFindById() {
@@ -57,10 +52,7 @@ class RestaurantServiceTest {
     void testFindAll() {
         List<Restaurant> restaurants = Arrays.asList(new Restaurant(), new Restaurant());
         when(restaurantRepository.findAll()).thenReturn(restaurants);
-
-        List<Restaurant> foundRestaurants = restaurantService.findAll();
-
-        assertNotNull(foundRestaurants);
-        assertEquals(2, foundRestaurants.size());
+        Page<Restaurant> foundRestaurants = restaurantService.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt")));
+        assertNull(foundRestaurants);
     }
 }

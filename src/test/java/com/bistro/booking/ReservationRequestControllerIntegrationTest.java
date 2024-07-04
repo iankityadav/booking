@@ -2,10 +2,7 @@ package com.bistro.booking;
 
 
 import com.bistro.booking.model.*;
-import com.bistro.booking.repository.BookingRepository;
-import com.bistro.booking.repository.ReservationRequestRepository;
-import com.bistro.booking.repository.RestaurantRepository;
-import com.bistro.booking.repository.UserRepository;
+import com.bistro.booking.repository.*;
 import com.bistro.booking.service.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +40,9 @@ public class ReservationRequestControllerIntegrationTest {
     private ReservationRequestRepository reservationRequestRepository;
 
     @Autowired
+    private RestaurantTableRepository restaurantTableRepository;
+
+    @Autowired
     private JwtService jwtService;
 
     @Autowired
@@ -55,6 +55,7 @@ public class ReservationRequestControllerIntegrationTest {
         baseUrl = "http://localhost:" + port + "/api/reservation-requests";
         reservationRequestRepository.deleteAll();
         bookingRepository.deleteAll();
+        restaurantTableRepository.deleteAll();
         restaurantRepository.deleteAll();
         userRepository.deleteAll();
     }
